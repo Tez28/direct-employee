@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/Tez28/direct-employee/issues"
   },
-  "homepage": "https://github.com/Tez28/direct-employee#readme"
+  "homepage": "https://github.com/Tez28/direct-employee#readme",
+  "dependencies": {
+    "inquirer": "^8.2.1"
+  }
 }
