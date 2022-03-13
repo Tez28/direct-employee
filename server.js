@@ -2,29 +2,29 @@
 const express = require('express');
 const inquirer = require("inquirer");
 const mysql = require("mysql2");
-const conTab = require("console.table");
-const db = require(".");
+// const conTab = require("console.table");
+const db = require("./db/db.sql");
 const PORT = process.env.PORT || 3001;
 const app = express();
 // Express middleware
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-const connection = mysql.newConnection({
-    host: "localhost",
-    port: 3001,
-    user: "root",
+// const connection = mysql.newConnection({
+//     host: "localhost",
+//     port: 3001,
+//     user: "root",
 
-    password: "NewPass20",
-    database: "company"
-});
+//     password: "NewPass20",
+//     database: "company"
+// });
 
-connection.connect(function(err) {
-    if(err) throw err;
-    console.log("connectd as employee id number " + connection.threadId);
+// connection.connect(function(err) {
+//     if(err) throw err;
+//     console.log("connectd as employee id number " + connection.threadId);
     
-    initApp();
-});
+//     initApp();
+// });
 
 // Initiates application for input
 function initApp() {
@@ -203,4 +203,4 @@ function done() {
 }
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
-  });
+});
