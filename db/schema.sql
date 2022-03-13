@@ -1,4 +1,6 @@
-
+DROP TABLE IF EXISTS department;
+DROP TABLE IF EXISTS role;
+DROP TABLE IF EXISTS eomployee;
 CREATE TABLE department (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(30) NOT NULL
@@ -9,4 +11,13 @@ CREATE TABLE role (
     title VARCHAR(30) NOT NULL,
     salary DECIMAL(10, 2) NOT NULL,
     department_id INT NOT NULL
+);
+
+CREATE TABLE employee (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    last_name VARCHAR(30) NOT NULL,
+    first_name VARCHAR(30) NOT NULL,
+    role_id INT NOT NULL,
+    manager_id INT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
