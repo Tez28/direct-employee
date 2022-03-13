@@ -11,12 +11,12 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 const connection = mysql.newConnection({
-    host: "localh",
+    host: "localhost",
     port: 3001,
     user: "root",
 
     password: "NewPass20",
-    database: "employee_db"
+    database: "company"
 });
 
 connection.connect(function(err) {
