@@ -1,7 +1,7 @@
 // add inquirer and dependencies
 const express = require('express');
 const inquirer = require("inquirer");
-const mysql = require("mysql2");
+const mysql = require("mysql");
 // const conTab = require("console.table");
 const db = require("./db/db.sql");
 const PORT = process.env.PORT || 3001;
@@ -10,21 +10,21 @@ const app = express();
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-// const connection = mysql.newConnection({
-//     host: "localhost",
-//     port: 3001,
-//     user: "root",
+const connection = mysql.createConnection({
+    host: "localhost",
+    port: 3001,
+    user: "root",
 
-//     password: "NewPass20",
-//     database: "company"
-// });
+    password: "NewPass20",
+    database: "company"
+});
 
-// connection.connect(function(err) {
-//     if(err) throw err;
-//     console.log("connectd as employee id number " + connection.threadId);
+connection.connect(function(err) {
+    if(err) throw err;
+    console.log("connectd as employee id number " + connection.threadId);
     
-//     initApp();
-// });
+    initApp();
+});
 
 // Initiates application for input
 function initApp() {
@@ -49,24 +49,28 @@ function initApp() {
             switch (result.choice) {
                 case "View All Department":
                     viewAllDepartment();
+                    initApp();
                     break;
                 case "View All Roles":
                     viewAllRoles();
+                    initApp();
                     break;
                 case "View All Employees":
                     viewAllEmployees();
+                    initApp();
                     break;
-                case "View A Department":
+                case "Add A Department":
                     newDepartment();
                     break;
-                case "View A Role":
+                case "Add A Role":
                     newRole();
                     break;
-                case "View A Employee":
+                case "Add A Employee":
                     newEmployee();
                     break;
                 case "Update employee role":
                     updateEmployee();
+                    initApp();
                     break;
                 default:
                     done();
@@ -81,16 +85,17 @@ function viewAllDepartment() {
     connection.query(query, function(err, res){
         if (err) throw err;
         console.table(res);
-        startApp();
-    });
+        initApp();
+    })
+    
 }
 // views all roles
 function viewAllRoles() {
     let query = "SELECT * FROM role";
-    connection.query(quer, function(err, res) {
+    connection.query(query, function(err, res) {
         if (err) throw err;
         console.table(res);
-        startApp();
+        initApp();
     });
 }
 
@@ -101,7 +106,8 @@ function viewAllEmployees() {
     connection.query(query, function(err, res) {
       if (err) throw err;
       console.table(res);
-      startScreen();
+      
+      initApp();
     });
 }
 // adds new department
@@ -114,9 +120,9 @@ function newDepartment() {
         connection.query("INSERT INTO department (name) VALUES (?)", [answer.newDep], function(err, res){
             if (err) throw err;
             console.table(res)
-            startApp();
+            initApp();
         })
-    })
+    }).then(initApp)
 }
 // adds new role
 function newRole() {
@@ -133,15 +139,16 @@ function newRole() {
         },
         {
             type: "input",
-            message: "What is the new the roles department ID number?"
+            message: "What is the new the roles department ID number?",
+            name: "depID"
         }
     ]).then(function(answer) {
         connection.query("INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)", [answer.newRole, answer.totalComp, answer.depID], function(err, res) {
             if (err) throw err;
             console.table(res);
-            startApp()
-        });
-    });
+            initApp()
+        })
+    }).then(initApp)
 };
 // adds new employee
 function newEmployee() {
@@ -170,9 +177,9 @@ function newEmployee() {
         connection.query("INSERT INTO employee (last_name, first_name, role_id, manager_id) VALUES (?, ?, ?, ?)", [answer.lastNam, answer.firstNam, answer.empId, answer.manId], function(err, res) {
             if (err) throw err;
             console.table(res);
-            startApp();
-        });
-    });
+            initApp();
+        })
+    }).then(initApp)
 }
 
 function updateEmployee() {
@@ -192,10 +199,12 @@ function updateEmployee() {
         connection.query("UPDATE employee SET role_id=? where LAST_NAME=?", [answer.UpRole, answer.UpEmp], function(err, res) {
             if (err) throw err;
             console.table(res);
-            startApp();
-        });
-    });
+            initApp();
+        })
+    }).then(initApp)
 }
+
+initApp();
 
 function done() {
     connection.end();
