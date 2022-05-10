@@ -9,7 +9,7 @@
  users will be required to type node server to initiate the application. Once initiated users will have the option to view departments,
  roles, and employess or add departments, roles and employees or update an employee.
  
- ## App Build
+ ## Technology
  Nodejs, Express, JavaScript
  
  ## App Link
